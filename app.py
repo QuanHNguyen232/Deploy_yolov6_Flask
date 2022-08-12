@@ -3,7 +3,7 @@ import urllib.request
 import os
 import cv2
 import my_yolov6
-
+import yaml
 from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
@@ -52,12 +52,20 @@ def get_file(filename):
 @app.route('/', methods=['GET', 'POST'])
 def detect():
     form = UploadForm()
+    input_img_url = None
+    output_img_url = None
+    
+    # Read all YOLOv6 classes
+    class_list = []
+    with open('./data/coco.yaml', 'r') as file:
+        data_load = yaml.safe_load(file)
+        class_list = data_load['names']
 
+    # Upload images
     if form.validate_on_submit():
         filename = photos.save(form.photo.data)
         input_img_url = url_for('get_file', filename=filename)
         
-        print('input_img_url', input_img_url)
         frame = cv2.imread('.'+input_img_url)   # need: ./dir/filename (not /dir/filename)
         
         frame, num_objs = yolov6_model.infer(frame)
@@ -66,20 +74,20 @@ def detect():
         
         if num_objs > 0:
             output_img_url = DETECTED_DIR+ '/' + input_img_url.split('/')[-1]
-            print('save_path', output_img_url)
             cv2.imwrite(output_img_url, frame)
-            # cv2.imwrite('test_img.jpg', frame)
-            print('frame exits \t num_objs=', num_objs)
-        else:
-            print('no obj detected')
         
         del frame
         
-    else:
-        output_img_url = None
+        # Get checkbox results
+        if request.method == 'POST':
+            print(request.form.getlist('mycheckbox'))
+        
+        if num_objs > 0:
+            return render_template('index.html', form=form, file_url=output_img_url, num_objs=num_objs, class_list=class_list)
+        return render_template('index.html', form=form, file_url=input_img_url, num_objs=num_objs, class_list=class_list)
 
-    return render_template('index.html', form=form, file_url=output_img_url)
-
+    
+    return render_template('index.html', form=form, file_url=None, num_objs=None, class_list=class_list)
 
 
 
