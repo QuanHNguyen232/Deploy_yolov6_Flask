@@ -1,0 +1,6 @@
+flask
+flask-cors
+opencv-python
+wtforms
+flask-wtf
+flask-reuploaded
