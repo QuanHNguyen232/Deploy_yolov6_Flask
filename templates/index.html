@@ -34,6 +34,7 @@
                 </form>
                 
                 {% if file_url %}
+                    <p>{{ file_url.split('/')[-1] }}</p>
                     <div class="mt-5">
                         <img src="{{ file_url }}" style="width: 500px;">
                     </div>
