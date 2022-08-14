@@ -105,7 +105,7 @@ class my_yolov6():
 
         return image, img_src
 
-    def infer(self, source, conf_thres=0.25, iou_thres=0.45, classes=None, agnostic_nms=False, max_det=1000):
+    def infer(self, source, conf_thres=0.25, iou_thres=0.45, classes=None, agnostic_nms=False, max_det=1000, interested_class=None):
         img, img_src = self.precess_image(source, self.img_size, self.stride, self.half)
         img = img.to(self.device)
 
@@ -116,13 +116,17 @@ class my_yolov6():
         pred_results = self.model(img)
         det = non_max_suppression(pred_results, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)[0]
 
+        class_names = []
         if len(det):
             det[:, :4] = self.rescale(img.shape[2:], det[:, :4], img_src.shape).round()
             for *xyxy, conf, cls in reversed(det):
                 class_num = int(cls)  # integer class
                 label = f'{self.class_names[class_num]} {conf:.2f}'
-                self.plot_box_and_label(img_src, max(round(sum(img_src.shape) / 2 * 0.003), 2), xyxy, label, color=(255,0,0))
+                class_name = self.class_names[class_num]
+                class_names.append(class_name)
+                if class_name in interested_class:
+                    self.plot_box_and_label(img_src, max(round(sum(img_src.shape) / 2 * 0.003), 2), xyxy, label, color=(255,0,0))
 
             img_src = np.asarray(img_src)
 
-        return img_src, len(det)
+        return img_src, len(det), class_names

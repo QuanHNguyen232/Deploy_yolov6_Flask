@@ -1,4 +1,4 @@
-from flask import Flask, flash, request, redirect, url_for, render_template, send_from_directory
+from flask import Flask, flash, request, redirect, url_for, render_template, send_from_directory, send_file
 import urllib.request
 import os
 import cv2
@@ -20,7 +20,6 @@ app.config['SECRET_KEY'] = 'asldfkjlj'
 # load model when create server
 yolov6_model = my_yolov6.my_yolov6('./yolo_weights/yolov6s.pt', 'cpu', './data/coco.yaml', 640, True)
 
-
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
 
@@ -38,17 +37,6 @@ def get_file(filename):
     return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
 
 
-# @app.route('/', methods=['GET', 'POST'])
-# def upload_image():
-#     form = UploadForm()
-#     if form.validate_on_submit():
-#         filename = photos.save(form.photo.data)
-#         file_url = url_for('get_file', filename=filename)
-#     else:
-#         file_url = None
-
-#     return render_template('index.html', form=form, file_url=file_url)
-
 @app.route('/', methods=['GET', 'POST'])
 def detect():
     form = UploadForm()
@@ -61,16 +49,19 @@ def detect():
         data_load = yaml.safe_load(file)
         class_list = data_load['names']
 
-    # Upload images
+    # Uploaded images
     if form.validate_on_submit():
+        
         filename = photos.save(form.photo.data)
         input_img_url = url_for('get_file', filename=filename)
         
         frame = cv2.imread('.'+input_img_url)   # need: ./dir/filename (not /dir/filename)
         
-        frame, num_objs = yolov6_model.infer(frame)
-        print('type(frame) = %s'%(type(frame)))
-        print('frame.shape = ', frame.shape)
+        # Get checkbox results
+        interested_class = request.form.getlist('mycheckbox')
+        interested_class = set(class_list) if len(interested_class)==0 else set(interested_class)
+
+        frame, num_objs, class_names = yolov6_model.infer(frame, interested_class=interested_class)
         
         if num_objs > 0:
             output_img_url = DETECTED_DIR+ '/' + input_img_url.split('/')[-1]
@@ -78,15 +69,10 @@ def detect():
         
         del frame
         
-        # Get checkbox results
-        if request.method == 'POST':
-            print(request.form.getlist('mycheckbox'))
-        
         if num_objs > 0:
-            return render_template('index.html', form=form, file_url=output_img_url, num_objs=num_objs, class_list=class_list)
+            return render_template('index.html', form=form, file_url=output_img_url, num_objs=num_objs, class_list=class_list, class_names=list(set(class_names)))
         return render_template('index.html', form=form, file_url=input_img_url, num_objs=num_objs, class_list=class_list)
 
-    
     return render_template('index.html', form=form, file_url=None, num_objs=None, class_list=class_list)
 
 

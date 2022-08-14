@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Flask Upload and display image</title>
+    <title>YOLOv6</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <style>
@@ -79,17 +80,19 @@
                         <p>Cannot detect any object</p>
                     {% else %}
                         <p>Detected {{num_objs}} object(s)</p>
+                        <p>{{ ' - '.join(class_names) }}</p>
                     {% endif %}
 
                     <!-- Show result image -->
                     <div class="mt-5">
                         <img src="{{ file_url }}" style="width: 500px;">
                     </div>
+
                 {% else %}
                     <p>Please upload image</p>
                 {% endif %}
 
-
+                
             </div>
             
         </div>
