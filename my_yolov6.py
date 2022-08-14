@@ -123,8 +123,9 @@ class my_yolov6():
                 class_num = int(cls)  # integer class
                 label = f'{self.class_names[class_num]} {conf:.2f}'
                 class_name = self.class_names[class_num]
-                class_names.append(class_name)
+                
                 if class_name in interested_class:
+                    class_names.append(class_name)
                     self.plot_box_and_label(img_src, max(round(sum(img_src.shape) / 2 * 0.003), 2), xyxy, label, color=(255,0,0))
 
             img_src = np.asarray(img_src)
