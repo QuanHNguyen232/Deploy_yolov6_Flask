@@ -16,9 +16,9 @@ onnxsim>=0.4.1 # ONNX simplifier
 thop  # FLOPs computation
 
 # For Flask app
-flask
-flask-cors
-opencv-python
+flask>=2.2.2
+flask-cors>=3.0.10
+opencv-python==4.6.0.66
 # wtforms
 # flask-wtf
 # flask-reuploaded

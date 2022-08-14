@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Flask Upload and display image</title>
+    <title>YOLOv6 online with Flask</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" /> 
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>      
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -27,9 +27,11 @@
 </head>
 <body>
     <div align="center">
-        <h1>Python Flask Upload and display image</h1>
+        <h1>YOLOv6 online with Flask</h1>
         {% if not filename %}
-        <h3>Select a file to upload</h3>
+        <h3>Select an image to upload</h3>
+        {% else %}
+        <h1>Upload successful</h1>
         {% endif %}
     </div>
     
@@ -45,20 +47,19 @@
                     <input type="submit" value="Submit" class="btn btn-info">
                 </p>
                 <!-- Show classes' checkboxes -->
+                <p>Default: all listed objects</p>
                 <ul>
                     {% for yolo_class in class_list %}
                     <li>
                         <label for="mycheckbox">
-                        <input type="checkbox" value={{yolo_class}} name="mycheckbox" style="vertical-align: middle;"><!-- {{yolo_class}} -->
-                        {{yolo_class}}
+                            <input type="checkbox" value={{yolo_class}} name="mycheckbox" style="vertical-align: middle;">
+                            {{yolo_class}}
                         </label>
                     </li>
                     {% endfor %}
                 </ul>
             </form>
 
-
-            
 
             <p>
                 {% with messages = get_flashed_messages() %}
@@ -72,13 +73,16 @@
                 {% endwith %}
             </p>
             {% if filename %}
-                <h4>{{ filename }}</h4>
+                
+                <a href="{{ url_for('download', filename=filename) }}"><button class="btn btn-success">Download</button></a>
                 <div>
                     <img src="{{ url_for('display_image', filename=filename) }}" style="width: 1024px;">
                 </div>
+                <h4>{{ filename }}</h4><br>
             {% endif %}
             
         </div>
     </div>
+
 </body>
 </html>

@@ -1,4 +1,4 @@
-from flask import Flask, flash, request, redirect, url_for, render_template, send_from_directory
+from flask import Flask, flash, request, redirect, url_for, render_template, send_from_directory, send_file
 import urllib.request
 import os
 import cv2
@@ -10,10 +10,10 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 STATIC_DIR = 'static/'
-UPLOADED_DIR = STATIC_DIR + 'photos/'
+PHOTO_DIR = 'photos/'
 
 app.secret_key = "secretkey"
-app.config['UPLOAD_FOLDER'] = UPLOADED_DIR
+app.config['UPLOAD_FOLDER'] = STATIC_DIR + PHOTO_DIR
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
@@ -76,11 +76,16 @@ def upload_image():
  
 @app.route('/display<filename>')
 def display_image(filename):
-    return redirect(url_for('static', filename='photos/'+filename), code=301)
+    return redirect(url_for('static', filename=PHOTO_DIR+filename), code=301)
 
-@app.route('/%s/<filename>'%(UPLOADED_DIR))
+@app.route('/%s/<filename>'%(app.config['UPLOAD_FOLDER']))
 def get_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/download/<filename>')
+def download(filename):
+    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    return send_file(path, as_attachment=True)
 
 def get_class_list():
     class_list = []
@@ -93,6 +98,7 @@ def clean_dir(path):
     list_dir = os.listdir(path)
     if list_dir and len(list_dir)>0:
         for file in list_dir:
+            if file == '.gitkeep': continue
             os.remove(os.path.join(path, file))
 
 if __name__ == "__main__":
