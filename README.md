@@ -29,4 +29,7 @@ GIF created with [ScreenToGif](https://www.screentogif.com/) ver.2.37 portable (
  ==> https://tutorial101.blogspot.com/2021/04/python-flask-upload-and-display-image.html -->
 
  <!-- Heroku deploy:
- https://www.youtube.com/watch?v=SiCAIRc0pEI or https://www.youtube.com/watch?v=Li0Abz-KT78 -->
+ https://www.youtube.com/watch?v=SiCAIRc0pEI or https://www.youtube.com/watch?v=Li0Abz-KT78
+ 
+ ERROR encountered: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
+  -->
