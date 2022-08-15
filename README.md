@@ -1,7 +1,7 @@
 # Deploy-yolov6-Flask
 
 ## Future work:
-* [X] Deploy on Heroku: Failed due to heavy files (1000MB while max is 500MB)
+* [X] Deploy on Heroku: Failed due to heavy files (max is 500MB, but torch>700MB, torchvision=20MB, openCV=60MB)
 * [ ] Allow upload multiple files
 * [ ] Allow upload mp4
 
