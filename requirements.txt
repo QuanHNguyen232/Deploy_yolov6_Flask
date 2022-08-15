@@ -1,27 +1,31 @@
 # pip install -r requirements.txt
 # python3.8 environment
 
+# torch>=1.8.0
+# torchvision>=0.9.0
+# numpy>=1.18.5
+# opencv-python>=4.1.2
+# PyYAML>=5.3.1
+# scipy>=1.4.1
+# tqdm>=4.41.0
+# addict>=2.4.0
+# tensorboard>=2.7.0
+# pycocotools>=2.0
+# onnx>=1.10.0  # ONNX export
+# onnxsim>=0.4.1 # ONNX simplifier
+# thop  # FLOPs computation
+
+# For Flask app
+# flask>=2.2.2
+# flask-cors>=3.0.10
+
+# For Heroku DEPLOYMENT
+# gunicorn==20.1.0
 torch>=1.8.0
 torchvision>=0.9.0
 numpy>=1.18.5
 opencv-python>=4.1.2
-PyYAML>=5.3.1
-scipy>=1.4.1
-tqdm>=4.41.0
-addict>=2.4.0
-tensorboard>=2.7.0
-pycocotools>=2.0
-onnx>=1.10.0  # ONNX export
-onnxsim>=0.4.1 # ONNX simplifier
-thop  # FLOPs computation
-
-# For Flask app
 flask>=2.2.2
 flask-cors>=3.0.10
-opencv-python==4.6.0.66
-# wtforms
-# flask-wtf
-# flask-reuploaded
 
-# For Heroku
-gunicorn==20.1.0
+# NOTE: 
