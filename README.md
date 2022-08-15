@@ -1,7 +1,7 @@
 # Deploy-yolov6-Flask
 
 ## Future work:
-* [ ] Deploy on Heroku
+* [X] Deploy on Heroku: Failed due to heavy files (1000MB while max is 500MB)
 * [ ] Allow upload multiple files
 * [ ] Allow upload mp4
 

@@ -1,0 +1,9 @@
+assets/
+configs/
+deploy/
+docs/
+tools/
+*.ipynb
+*.md
+*.pt
+*.gif
