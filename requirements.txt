@@ -22,3 +22,6 @@ opencv-python==4.6.0.66
 # wtforms
 # flask-wtf
 # flask-reuploaded
+
+# For Heroku
+gunicorn==20.1.0

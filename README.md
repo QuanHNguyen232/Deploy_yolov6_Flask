@@ -27,3 +27,6 @@ GIF created with [ScreenToGif](https://www.screentogif.com/) ver.2.37 portable (
 
 <!-- Follow https://www.youtube.com/watch?v=I9BBGulrOmo
  ==> https://tutorial101.blogspot.com/2021/04/python-flask-upload-and-display-image.html -->
+
+ <!-- Heroku deploy:
+ https://www.youtube.com/watch?v=SiCAIRc0pEI or https://www.youtube.com/watch?v=Li0Abz-KT78 -->
